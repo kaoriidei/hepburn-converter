@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ローマ字 → ヘボン式変換</title>
+<style>
+  body { font-family: sans-serif; padding: 20px; }
+  input, button { padding: 8px; margin: 5px 0; }
+</style>
+</head>
+<body>
+<h2>ローマ字 → ヘボン式変換ツール</h2>
+<input type="text" id="inputName" placeholder="ローマ字で名前を入力" size="40">
+<button onclick="convertName()">変換</button>
+<p>ヘボン式表記: <span id="result"></span></p>
+
+<script>
+function convertName() {
+    let name = document.getElementById("inputName").value.trim().toLowerCase();
+
+    // 基本的なヘボン式置換ルール
+    let rules = [
+        ["si", "shi"],
+        ["ti", "chi"],
+        ["tu", "tsu"],
+        ["hu", "fu"],
+        ["zi", "ji"],
+        ["ji", "ji"], // 保険的に
+        ["sya", "sha"],
+        ["syu", "shu"],
+        ["syo", "sho"],
+        ["tya", "cha"],
+        ["tyu", "chu"],
+        ["tyo", "cho"],
+        ["zyu", "ju"],
+        ["zyo", "jo"],
+        ["zyi", "ji"]
+    ];
+
+    // 長音などの調整（簡易版）
+    let result = name;
+    rules.forEach(([before, after]) => {
+        result = result.replace(new RegExp(before, "g"), after);
+    });
+
+    // 頭文字を大文字に
+    result = result.replace(/\b\w/g, (match) => match.toUpperCase());
+
+    document.getElementById("result").textContent = result;
+}
+</script>
+</body>
+</html>
